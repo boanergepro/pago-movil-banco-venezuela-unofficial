@@ -77,7 +77,7 @@ public class FormActivity extends AppCompatActivity {
             // Obtener la posicion del codigo en el arreglo para obtener el banco
             int position = 0;
             for (int i = 0; i < Bank.codes.length; i++) {
-                if (Bank.codes[i].contains(codeIntent)) {
+                if (Bank.codes[i] == codeIntent) {
                     position = i;
                 }
             }
@@ -86,11 +86,7 @@ public class FormActivity extends AppCompatActivity {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
             spinner.setSelection(position);
-
-            //Deshabilitar los campos para que no sean editados.
-            spinner.setEnabled(false);
-            cedula.setEnabled(false);
-            phone.setEnabled(false);
+            
             // Colocarle el focus a este input.
             amount.requestFocus();
 
