@@ -86,7 +86,7 @@ public class FormActivity extends AppCompatActivity {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
             spinner.setSelection(position);
-            
+
             // Colocarle el focus a este input.
             amount.requestFocus();
 
