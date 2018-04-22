@@ -41,6 +41,9 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
+        //Colocar flecha ir atras en el navbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Toast.makeText(this, "Seleccione un destinatario", Toast.LENGTH_LONG).show();
 
         // DB realm
