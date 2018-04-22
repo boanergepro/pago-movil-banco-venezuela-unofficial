@@ -57,6 +57,10 @@ public class FormActivity extends AppCompatActivity {
 
         mContext = getApplicationContext();
 
+        //Colocar icono en el navbar
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_pago_movil);
+
         // Instancias campos
         spinner = (Spinner) findViewById(R.id.spinner);
         cedula = (EditText) findViewById(R.id.cedula);
