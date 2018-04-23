@@ -59,7 +59,7 @@ public class FormActivity extends AppCompatActivity {
 
         //Colocar icono en el navbar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.mipmap.ic_pago_movil_2);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher_pago_movil);
 
         // Instancias campos
         spinner = (Spinner) findViewById(R.id.spinner);
