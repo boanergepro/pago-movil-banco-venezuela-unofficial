@@ -79,7 +79,7 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
         realm.commitTransaction();
     }
 
-    // ** Dialogs
+    // ** Dialog crear contacto
     private void ShowAlertForCreatingContact(String title, String message) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -112,7 +112,7 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
         final EditText cedula = (EditText) viewInflated.findViewById(R.id.cedulaAlertContact);
         final EditText phone = (EditText) viewInflated.findViewById(R.id.phoneAlertContact);
 
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String namesValue = names.getText().toString().trim();
@@ -132,9 +132,39 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
         dialog.show();
     }
 
+    // ** Dialog opciones del contacto
+    private void ShowAlertForOptinonsContac() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(ContactActivity.this, "Presionado el boton cancelar", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Editar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(ContactActivity.this, "Presionado el boton editar", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(ContactActivity.this, "Presionado el boton borrar", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this, "jhgsdfsFSF", Toast.LENGTH_SHORT).show();
+        ShowAlertForOptinonsContac();
+        Toast.makeText(ContactActivity.this, id + "", Toast.LENGTH_SHORT).show();
         return true;
     }
 
