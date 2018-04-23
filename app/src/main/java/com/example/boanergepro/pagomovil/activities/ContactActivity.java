@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -54,7 +55,6 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
         contacts.addChangeListener(this);
 
         adapter = new ContactAdapter(this, contacts, R.layout.list_view_contact_item);
-        Log.e("Debug", contacts.toString());
         listView = (ListView) findViewById(R.id.listViewContacts);
         listView.setAdapter(adapter);
 
@@ -72,10 +72,19 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
     }
 
     // ** CRUD Actions
-    private void createCreateNewContact(String namesValue, String codeValue, String cedulaValue, String phoneValue) {
+    private void CreateNewContact(String namesValue, String codeValue, String cedulaValue, String phoneValue) {
         realm.beginTransaction();
         Contact contact = new Contact(namesValue, codeValue, cedulaValue, phoneValue);
         realm.copyToRealm(contact);
+        realm.commitTransaction();
+    }
+    private void EditContact() {
+
+    }
+    private void DeleteContact(int id) {
+        realm.beginTransaction();
+        Contact singleContact = contacts.get(id);
+        singleContact.deleteFromRealm();
         realm.commitTransaction();
     }
 
@@ -121,7 +130,7 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
                 String phoneValue = phone.getText().toString().trim();
 
                 if (namesValue.length() > 0 && codeValue.length() > 0 && cedulaValue.length() > 0 && phoneValue.length() > 0) {
-                    createCreateNewContact(namesValue, codeValue, cedulaValue, phoneValue);
+                    CreateNewContact(namesValue, codeValue, cedulaValue, phoneValue);
                 } else {
                     Toast.makeText(getApplicationContext(), "Todos los campos son requeridos.!",Toast.LENGTH_SHORT).show();
                 }
@@ -133,38 +142,48 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
     }
 
     // ** Dialog opciones del contacto
-    private void ShowAlertForOptinonsContac() {
+    private void ShowAlertForOptinonsContac(String title, String message, final int position) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if (title != null) builder.setTitle(title);
+        if (message != null) builder.setMessage(message);
 
-        builder.setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_options_contact, null);
+        builder.setView(viewInflated);
+
+        final AlertDialog dialog = builder.create();
+
+        // Instancia de botones
+        ImageButton imgBtnEditar = (ImageButton) viewInflated.findViewById(R.id.alertImageButtonEdit);
+        ImageButton imgBtnDelete = (ImageButton) viewInflated.findViewById(R.id.alertImageButtonDelete);
+
+        imgBtnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(ContactActivity.this, "Presionado el boton cancelar", Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+
+
             }
         });
-        builder.setNegativeButton("Editar", new DialogInterface.OnClickListener() {
+
+        imgBtnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(ContactActivity.this, "Presionado el boton editar", Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                // Borrar el registro seleccionado
+                DeleteContact(position);
+                dialog.dismiss();
             }
         });
 
-        builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(ContactActivity.this, "Presionado el boton borrar", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        AlertDialog dialog = builder.create();
         dialog.show();
+
+
+
+
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        ShowAlertForOptinonsContac();
-        Toast.makeText(ContactActivity.this, id + "", Toast.LENGTH_SHORT).show();
+        ShowAlertForOptinonsContac("Menu de opciones","Por favor seleccione lo que desea hacer", position);
         return true;
     }
 
