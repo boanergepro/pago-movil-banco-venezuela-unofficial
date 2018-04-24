@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.boanergepro.pagomovil.R;
 import com.example.boanergepro.pagomovil.models.Contact;
+import com.example.boanergepro.pagomovil.resources.Bank;
 
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class ContactAdapter extends BaseAdapter{
             convertView = LayoutInflater.from(context).inflate(layout, null);
             vh = new ViewHolder();
             vh.names = (TextView) convertView.findViewById(R.id.namesListView);
+            vh.bank = (TextView) convertView.findViewById(R.id.bankListView);
             vh.cedula = (TextView) convertView.findViewById(R.id.cedulaListView);
             vh.phone = (TextView) convertView.findViewById(R.id.phoneListView);
             convertView.setTag(vh);
@@ -63,6 +65,15 @@ public class ContactAdapter extends BaseAdapter{
 
         Contact contact = list.get(position);
         vh.names.setText(contact.getNames());
+
+        // Obtener la posicion del codigo en el arreglo para obtener el banco
+        int itemBank = 0;
+        for (int i = 0; i < Bank.codes.length; i++) {
+            if (Bank.codes[i].equals(contact.getCode())) {
+                itemBank = i;
+            }
+        }
+        vh.bank.setText(Bank.bancos[itemBank]);
         vh.cedula.setText(contact.getCedula());
         vh.phone.setText(contact.getPhone());
 
@@ -71,6 +82,7 @@ public class ContactAdapter extends BaseAdapter{
 
     public class ViewHolder{
         TextView names;
+        TextView bank;
         TextView cedula;
         TextView phone;
     }
