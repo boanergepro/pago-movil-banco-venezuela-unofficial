@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -89,7 +88,7 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
         realm.copyToRealmOrUpdate(singleContac);
         realm.commitTransaction();
     }
-    
+
     private void DeleteContact(int position) {
         // postion equivale al id
         realm.beginTransaction();
