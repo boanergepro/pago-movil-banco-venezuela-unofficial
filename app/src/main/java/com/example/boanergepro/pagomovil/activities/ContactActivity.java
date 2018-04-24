@@ -66,31 +66,48 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowAlertForCreatingContact("Agregar un nuevo contacto.", "Rellene todos los campos por favor");
+                ShowAlertForCreatingContact("Agregar un nuevo contacto.", "Rellene todos los campos por favor", "create", 0);
             }
         });
     }
 
-    // ** CRUD Actions
+    // ************************** CRUD Actions **************************
     private void CreateNewContact(String namesValue, String codeValue, String cedulaValue, String phoneValue) {
         realm.beginTransaction();
         Contact contact = new Contact(namesValue, codeValue, cedulaValue, phoneValue);
         realm.copyToRealm(contact);
         realm.commitTransaction();
     }
-    private void EditContact() {
 
-    }
-    private void DeleteContact(int id) {
+    private void EditContact(String namesValue, String codeValue, String cedulaValue, String phoneValue,int position) {
         realm.beginTransaction();
-        Contact singleContact = contacts.get(id);
+        Contact singleContac = contacts.get(position);
+        singleContac.setNames(namesValue);
+        singleContac.setCode(codeValue);
+        singleContac.setCedula(cedulaValue);
+        singleContac.setPhone(phoneValue);
+        realm.copyToRealmOrUpdate(singleContac);
+        realm.commitTransaction();
+    }
+    
+    private void DeleteContact(int position) {
+        // postion equivale al id
+        realm.beginTransaction();
+        Contact singleContact = contacts.get(position);
         singleContact.deleteFromRealm();
         realm.commitTransaction();
     }
 
-    // ** Dialog crear contacto
-    private void ShowAlertForCreatingContact(String title, String message) {
-
+    // ************************** Dialog crear contacto **************************
+    private void ShowAlertForCreatingContact(String title, String message, String action, final int position) {
+        /*
+        * parametros
+        * title = Titulo del cuadro de dialogo
+        * message = Mensaje del cuadro de dialogo
+        * action = (edit o create) denotara el comportamiento del cuadro de dialogo
+        * position = denota la posicion del elemento presionado en el list view, si la action es crear
+        * el valor por defecto sera 0 si es editar sera diferente.
+        * */
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         if (title != null) builder.setTitle(title);
@@ -99,49 +116,109 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_create_contact, null);
         builder.setView(viewInflated);
 
-        spinnerAlert = (Spinner) viewInflated.findViewById(R.id.spinnerAlertContact);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Bank.bancos);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerAlert.setAdapter(adapter);
+        if (action != null) {
+            spinnerAlert = (Spinner) viewInflated.findViewById(R.id.spinnerAlertContact);
+            final EditText names = (EditText) viewInflated.findViewById(R.id.namesAlertContact);
+            final EditText cedula = (EditText) viewInflated.findViewById(R.id.cedulaAlertContact);
+            final EditText phone = (EditText) viewInflated.findViewById(R.id.phoneAlertContact);
 
-        //Accion al presionar un item del spinner
-        spinnerAlert.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                //Toast.makeText(adapterView.getContext(), (String) adapterView.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
-                code = Bank.codes[position];
+            if (action.equals("create")) {
+                // Crear spinner vacio
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Bank.bancos);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerAlert.setAdapter(adapter);
+
+                //Accion al presionar un item del spinner
+                spinnerAlert.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                        //Toast.makeText(adapterView.getContext(), (String) adapterView.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                        code = Bank.codes[position];
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+                builder.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String namesValue = names.getText().toString().trim();
+                        String codeValue = code.trim();
+                        String cedulaValue = cedula.getText().toString().trim();
+                        String phoneValue = phone.getText().toString().trim();
+
+                        if (namesValue.length() > 0 && codeValue.length() > 0 && cedulaValue.length() > 0 && phoneValue.length() > 0) {
+                            CreateNewContact(namesValue, codeValue, cedulaValue, phoneValue);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Todos los campos son requeridos.!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            else if (action.equals("edit")) {
+                // Obtener de la base de datos el registro que se desea editar
+                final String namesValue = contacts.get(position).getNames();
+                final String codeValue = contacts.get(position).getCode();
+                final String cedulaValue = contacts.get(position).getCedula();
+                final String phoneValue = contacts.get(position).getPhone();
 
-            }
-        });
+                // Cargar los datos en el formulario
 
-        final EditText names = (EditText) viewInflated.findViewById(R.id.namesAlertContact);
-        final EditText cedula = (EditText) viewInflated.findViewById(R.id.cedulaAlertContact);
-        final EditText phone = (EditText) viewInflated.findViewById(R.id.phoneAlertContact);
-
-        builder.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String namesValue = names.getText().toString().trim();
-                String codeValue = code.trim();
-                String cedulaValue = cedula.getText().toString().trim();
-                String phoneValue = phone.getText().toString().trim();
-
-                if (namesValue.length() > 0 && codeValue.length() > 0 && cedulaValue.length() > 0 && phoneValue.length() > 0) {
-                    CreateNewContact(namesValue, codeValue, cedulaValue, phoneValue);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Todos los campos son requeridos.!",Toast.LENGTH_SHORT).show();
+                // Obtener la posicion del codigo en el arreglo para obtener el banco
+                int itemBank = 0;
+                for (int i = 0; i < Bank.codes.length; i++) {
+                    if (Bank.codes[i].equals(codeValue)) {
+                        itemBank = i;
+                    }
                 }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Bank.bancos);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerAlert.setAdapter(adapter);
+                spinnerAlert.setSelection(itemBank);
+
+                //Accion al presionar un item del spinner
+                spinnerAlert.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                        //Toast.makeText(adapterView.getContext(), (String) adapterView.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                        code = Bank.codes[position];
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+                names.setText(namesValue);
+                cedula.setText(cedulaValue);
+                phone.setText(phoneValue);
+
+                builder.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String namesEdit = names.getText().toString().trim();
+                        String cedulaEdit = cedula.getText().toString().trim();
+                        String phoneEdit = phone.getText().toString().trim();
+
+                        if (namesEdit.length() > 0 && code.length() > 0 && cedulaEdit.length() > 0 && phoneEdit.length() > 0) {
+                            EditContact(namesEdit, code, cedulaEdit, phoneEdit, position);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Ningun campo puede estar vacio.!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
-        });
+        }
 
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
-    // ** Dialog opciones del contacto
+    // ************************** Dialog opciones del contacto **************************
     private void ShowAlertForOptinonsContac(String title, String message, final int position) {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -160,8 +237,9 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
         imgBtnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                // Editar
+                ShowAlertForCreatingContact("Editar cotacto", "Rellene los campos que desea actualizar","edit", position);
+                dialog.dismiss();
             }
         });
 
@@ -174,11 +252,8 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
             }
         });
 
+        // Mostrar el cuadrode dialogo
         dialog.show();
-
-
-
-
     }
 
     @Override
