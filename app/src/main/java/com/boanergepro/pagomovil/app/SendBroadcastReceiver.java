@@ -1,4 +1,4 @@
-package com.example.boanergepro.pagomovil.app;
+package com.boanergepro.pagomovil.app;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;

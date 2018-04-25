@@ -1,4 +1,4 @@
-package com.example.boanergepro.pagomovil.activities;
+package com.boanergepro.pagomovil.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,10 +16,10 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-import com.example.boanergepro.pagomovil.R;
-import com.example.boanergepro.pagomovil.adapters.ContactAdapter;
-import com.example.boanergepro.pagomovil.models.Contact;
-import com.example.boanergepro.pagomovil.resources.Bank;
+import com.boanergepro.pagomovil.R;
+import com.boanergepro.pagomovil.adapters.ContactAdapter;
+import com.boanergepro.pagomovil.models.Contact;
+import com.boanergepro.pagomovil.resources.Bank;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;

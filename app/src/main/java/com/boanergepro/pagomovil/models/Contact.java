@@ -1,6 +1,6 @@
-package com.example.boanergepro.pagomovil.models;
+package com.boanergepro.pagomovil.models;
 
-import com.example.boanergepro.pagomovil.app.MyApplication;
+import com.boanergepro.pagomovil.app.MyApplication;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

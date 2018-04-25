@@ -1,8 +1,8 @@
-package com.example.boanergepro.pagomovil.app;
+package com.boanergepro.pagomovil.app;
 
 import android.app.Application;
 
-import com.example.boanergepro.pagomovil.models.Contact;
+import com.boanergepro.pagomovil.models.Contact;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

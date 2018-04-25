@@ -1,4 +1,4 @@
-package com.example.boanergepro.pagomovil.adapters;
+package com.boanergepro.pagomovil.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.boanergepro.pagomovil.R;
-import com.example.boanergepro.pagomovil.models.Contact;
-import com.example.boanergepro.pagomovil.resources.Bank;
+import com.boanergepro.pagomovil.models.Contact;
+import com.boanergepro.pagomovil.resources.Bank;
+import com.boanergepro.pagomovil.R;
 
 import java.util.List;
 

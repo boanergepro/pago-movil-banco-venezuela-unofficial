@@ -1,14 +1,12 @@
-package com.example.boanergepro.pagomovil.activities;
+package com.boanergepro.pagomovil.activities;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -16,7 +14,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,17 +23,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
-import com.example.boanergepro.pagomovil.R;
-import com.example.boanergepro.pagomovil.resources.Bank;
-import com.example.boanergepro.pagomovil.app.SendBroadcastReceiver;
-
-import java.lang.reflect.Array;
-import java.util.LinkedHashMap;
-
-import io.realm.Realm;
+import com.boanergepro.pagomovil.app.SendBroadcastReceiver;
+import com.boanergepro.pagomovil.resources.Bank;
+import com.boanergepro.pagomovil.R;
 
 public class FormActivity extends AppCompatActivity {
 

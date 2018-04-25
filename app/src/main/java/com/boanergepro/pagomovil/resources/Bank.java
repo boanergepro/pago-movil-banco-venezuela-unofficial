@@ -1,4 +1,4 @@
-package com.example.boanergepro.pagomovil.resources;
+package com.boanergepro.pagomovil.resources;
 
 /**
  * Created by boanergepro on 18/04/18.
