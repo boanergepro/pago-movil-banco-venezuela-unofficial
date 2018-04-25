@@ -43,7 +43,7 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
 
         //Colocar flecha ir atras en el navbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        getSupportActionBar().setTitle("Contactos");
         Toast.makeText(this, "Seleccione un destinatario", Toast.LENGTH_LONG).show();
 
         // DB realm
