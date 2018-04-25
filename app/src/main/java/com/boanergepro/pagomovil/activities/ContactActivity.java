@@ -21,6 +21,8 @@ import com.boanergepro.pagomovil.adapters.ContactAdapter;
 import com.boanergepro.pagomovil.models.Contact;
 import com.boanergepro.pagomovil.resources.Bank;
 
+import javax.annotation.Nonnull;
+
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
@@ -220,46 +222,42 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
     }
 
     // ************************** Dialog opciones del contacto **************************
-    private void ShowAlertForOptinonsContac(String title, String message, final int position) {
+    private void ShowAlertForOptinonsContact(@Nonnull String title,@Nonnull String message,@Nonnull final int position) {
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        if (title != null) builder.setTitle(title);
-        if (message != null) builder.setMessage(message);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_options_contact, null);
-        builder.setView(viewInflated);
+        final CharSequence[] items = new CharSequence[2];
+        items[0] = "Editar";
+        items[1] = "Borrar";
+
+       //Setear opciones al menu.
+        builder.
+                setTitle(title)
+                .setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (items[which].equals("Editar")) {
+                    // Editar
+                    ShowAlertForCreatingContact("Editar cotacto", "Rellene los campos que desea actualizar","edit", position);
+                    dialog.dismiss();
+                }
+                if (items[which].equals("Borrar")) {
+                    // Borrar el registro seleccionado
+                    DeleteContact(position);
+                    dialog.dismiss();
+                }
+            }
+        });
+
 
         final AlertDialog dialog = builder.create();
-
-        // Instancia de botones
-        ImageButton imgBtnEditar = (ImageButton) viewInflated.findViewById(R.id.alertImageButtonEdit);
-        ImageButton imgBtnDelete = (ImageButton) viewInflated.findViewById(R.id.alertImageButtonDelete);
-
-        imgBtnEditar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Editar
-                ShowAlertForCreatingContact("Editar cotacto", "Rellene los campos que desea actualizar","edit", position);
-                dialog.dismiss();
-            }
-        });
-
-        imgBtnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Borrar el registro seleccionado
-                DeleteContact(position);
-                dialog.dismiss();
-            }
-        });
-
         // Mostrar el cuadrode dialogo
         dialog.show();
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        ShowAlertForOptinonsContac("Menu de opciones","Por favor seleccione lo que desea hacer", position);
+        ShowAlertForOptinonsContact("Menu de opciones","Por favor seleccione lo que desea hacer", position);
         return true;
     }
 
