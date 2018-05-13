@@ -5,22 +5,28 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
-        android:name="com.boanergepro.pagomovil.app.MyApplication"
+        android:name=".app.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_pago_movil"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.boanergepro.pagomovil.activities.FormActivity">
+        <activity android:name=".activities.FormActivity"/>
+        <activity
+            android:name=".activities.ContactActivity"
+            android:parentActivityName=".activities.FormActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.boanergepro.pagomovil.activities.FormActivity" />
+        </activity>
+
+        <activity android:name=".Splash.SplashActivity" android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
 
-        <activity android:name="com.boanergepro.pagomovil.activities.ContactActivity" android:parentActivityName="com.boanergepro.pagomovil.activities.FormActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.boanergepro.pagomovil.activities.FormActivity"/>
         </activity>
     </application>
 
