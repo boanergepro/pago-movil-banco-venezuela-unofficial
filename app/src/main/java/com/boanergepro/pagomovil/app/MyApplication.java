@@ -1,6 +1,7 @@
 package com.boanergepro.pagomovil.app;
 
 import android.app.Application;
+import android.os.SystemClock;
 
 import com.boanergepro.pagomovil.models.Contact;
 
@@ -22,6 +23,8 @@ public class MyApplication  extends Application {
     @Override
     public void onCreate() {
         setUpRealmConfig();
+        //Retardo para que el splash dure por 2600 ms
+        SystemClock.sleep(2600);
 
         Realm realm = Realm.getDefaultInstance();
 
