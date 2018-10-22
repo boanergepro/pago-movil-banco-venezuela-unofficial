@@ -97,7 +97,7 @@ public class FormActivity extends AppCompatActivity {
             // Obtener la posicion del codigo en el arreglo para obtener el banco
             int position = 0;
             for (int i = 0; i < Bank.codes.length; i++) {
-                if (Bank.codes[i] == codeIntent) {
+                if (Bank.codes[i].equals(codeIntent)) {
                     position = i;
                 }
             }
